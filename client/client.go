@@ -26,5 +26,4 @@ func main() {
 		log.Fatalf("Error when calling SayHello, %s", err)
 	}
 	log.Printf("Response from Server: %v", response.Body)
-
 }
