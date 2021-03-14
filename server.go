@@ -6,6 +6,7 @@ import (
 	"net"
 
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
 )
 
 func main() {
@@ -18,6 +19,7 @@ func main() {
 
 	s := chat.Server{}
 	chat.RegisterChatServiceServer(gRPCServer, &s)
+	reflection.Register(gRPCServer)
 
 	if err := gRPCServer.Serve(lis); err != nil {
 		log.Fatalf("Failed to serve gRPC server over port 9000: %v", err)
