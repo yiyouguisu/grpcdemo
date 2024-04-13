@@ -2,6 +2,7 @@ package main
 
 import (
 	"gRPCServerDemo/chat"
+	"gRPCServerDemo/stream"
 	"log"
 	"net"
 
@@ -16,9 +17,8 @@ func main() {
 	}
 
 	gRPCServer := grpc.NewServer()
-
-	s := chat.Server{}
-	chat.RegisterChatServiceServer(gRPCServer, &s)
+	chat.RegisterChatServiceServer(gRPCServer, &chat.Server{})
+	stream.RegisterStreamServiceServer(gRPCServer, &stream.StreamService{})
 	reflection.Register(gRPCServer)
 
 	if err := gRPCServer.Serve(lis); err != nil {
