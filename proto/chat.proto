@@ -3,10 +3,14 @@ syntax = "proto3";
 package proto;
 option go_package = "./chat";
 
-message Message {
+message RequstMessage {
+    string body = 1;
+}
+
+message ResponseMessage {
     string body = 1;
 }
 
 service ChatService {
-    rpc SayHello (Message) returns (Message){};
+    rpc SayHello (RequstMessage) returns (ResponseMessage){};
 }

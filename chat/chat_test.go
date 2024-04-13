@@ -9,13 +9,13 @@ import (
 func TestServer_SayHello(t *testing.T) {
 	type args struct {
 		ctx     context.Context
-		message *Message
+		message *RequstMessage
 	}
 	tests := []struct {
 		name    string
 		s       *Server
 		args    args
-		want    *Message
+		want    *ResponseMessage
 		wantErr bool
 	}{
 		{
@@ -23,9 +23,9 @@ func TestServer_SayHello(t *testing.T) {
 			s:    &Server{},
 			args: args{
 				ctx:     context.Background(),
-				message: &Message{Body: "hello"},
+				message: &RequstMessage{Body: "hello"},
 			},
-			want:    &Message{Body: "Hello from the server!"},
+			want:    &ResponseMessage{Body: "Hello from the server!"},
 			wantErr: false,
 		},
 	}
