@@ -1,26 +1,27 @@
-# Build the manager binary
-FROM golang:1.15 as builder
+FROM --platform=$BUILDPLATFORM golang:1.22 AS builder
+
+ARG TARGETOS
+ARG TARGETARCH
 
 WORKDIR /workspace
-# Copy the Go Modules manifests
-COPY go.mod go.mod
-COPY go.sum go.sum
-# cache deps before building and copying source so that we don't need to re-download as much
-# and so that source changes don't invalidate our downloaded layer
-RUN GOPROXY=https://goproxy.cn,direct go mod download
 
-# Copy the go source
-COPY server.go main.go
-COPY chat/ chat/
+# 缓存依赖
+COPY go.mod go.sum ./
+RUN go mod download
 
-# Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GO111MODULE=on go build -a -o manager main.go
+# 拷贝源码
+COPY cmd/ cmd/
+COPY internal/ internal/
+COPY gen/ gen/
 
-# Use distroless as minimal base image to package the manager binary
-# Refer to https://github.com/GoogleContainerTools/distroless for more details
-FROM golang:1.15
+# 编译
+RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -a -o server ./cmd/server
+
+# 最小镜像
+FROM gcr.io/distroless/static-debian12
 WORKDIR /
-COPY --from=builder /workspace/manager .
+COPY --from=builder /workspace/server .
 USER nonroot:nonroot
 
-ENTRYPOINT ["/manager"]
+EXPOSE 9000
+ENTRYPOINT ["/server"]

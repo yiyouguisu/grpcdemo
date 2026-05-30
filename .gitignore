@@ -1,2 +1,5 @@
 .vscode
 .idea
+bin/
+client/chat/test_client
+*.exe
