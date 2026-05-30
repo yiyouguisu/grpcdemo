@@ -2,12 +2,15 @@
 
 # 生成 protobuf 代码
 proto:
-	protoc --go_out=gen --go_opt=paths=source_relative \
-		--go-grpc_out=gen --go-grpc_opt=paths=source_relative \
+	protoc --go_out=./gen --go_opt=module=gRPCServerDemo \
+		--go-grpc_out=./gen --go-grpc_opt=module=gRPCServerDemo \
 		proto/chat.proto
-	protoc --go_out=gen --go_opt=paths=source_relative \
-		--go-grpc_out=gen --go-grpc_opt=paths=source_relative \
+	protoc --go_out=./gen --go_opt=module=gRPCServerDemo \
+		--go-grpc_out=./gen --go-grpc_opt=module=gRPCServerDemo \
 		proto/stream.proto
+	protoc --go_out=./gen --go_opt=module=gRPCServerDemo \
+		--go-grpc_out=./gen --go-grpc_opt=module=gRPCServerDemo \
+		proto/admin.proto
 
 # 编译 server 和 client
 build:

@@ -10,9 +10,11 @@ import (
 
 	chatpb "gRPCServerDemo/gen/chat"
 	streampb "gRPCServerDemo/gen/stream"
+	adminpb "gRPCServerDemo/gen/admin"
 	"gRPCServerDemo/internal/chat"
 	"gRPCServerDemo/internal/interceptor"
 	"gRPCServerDemo/internal/stream"
+	"gRPCServerDemo/internal/admin"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
@@ -40,6 +42,10 @@ func main() {
 	// 注册业务服务
 	chatpb.RegisterChatServiceServer(gRPCServer, &chat.Handler{})
 	streampb.RegisterStreamServiceServer(gRPCServer, &stream.Handler{})
+
+	// 注册AdminService（在其他服务之后注册）
+	adminService := admin.NewAdminServiceImpl(gRPCServer)
+	adminpb.RegisterAdminServiceServer(gRPCServer, adminService)
 
 	// 注册健康检查服务（全局 + 各服务）
 	healthServer := health.NewServer()

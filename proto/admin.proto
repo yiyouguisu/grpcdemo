@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package proto;
+option go_package = "gRPCServerDemo/admin";
+
+message ListServicesRequest {
+}
+
+message ListServicesResponse {
+  repeated string service_names = 1;
+}
+
+service AdminService {
+  rpc ListServices(ListServicesRequest) returns (ListServicesResponse);
+}

@@ -6,6 +6,7 @@ import (
 	"io"
 	"log"
 
+	adminpb "gRPCServerDemo/gen/admin"
 	chatpb "gRPCServerDemo/gen/chat"
 	streampb "gRPCServerDemo/gen/stream"
 
@@ -31,6 +32,9 @@ func main() {
 
 	fmt.Println("\n=== Bidirectional Streaming: Route ===")
 	testRoute(conn)
+
+	fmt.Println("\n=== Unary RPC: ListServices ===")
+	testListServices(conn)
 }
 
 // 一元 RPC
@@ -127,4 +131,14 @@ func testRoute(conn *grpc.ClientConn) {
 		}
 		log.Printf("resp: pt.name: %s, pt.value: %d", resp.Pt.Name, resp.Pt.Value)
 	}
+}
+
+// Admin 服务：列出所有注册的服务
+func testListServices(conn *grpc.ClientConn) {
+	client := adminpb.NewAdminServiceClient(conn)
+	resp, err := client.ListServices(context.Background(), &adminpb.ListServicesRequest{})
+	if err != nil {
+		log.Fatalf("ListServices error: %v", err)
+	}
+	log.Printf("Registered services: %v", resp.ServiceNames)
 }
