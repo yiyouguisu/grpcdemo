@@ -6,3 +6,5 @@ bin/
 *.out
 coverage.out
 vendor/
+.claude/
+openspec/
