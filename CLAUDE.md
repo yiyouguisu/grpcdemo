@@ -30,7 +30,10 @@ make lint       # golangci-lint 检查
 
 ## 编码规范
 
+详见 [CODING_STYLE.md](CODING_STYLE.md)，关键要点：
+
 - import 分组顺序：标准库、第三方库、内部包
+- 服务实现统一使用 `handler.go` + `Handler` 结构体
 - proto 文件统一使用 4 空格缩进
 - 测试使用 baseMockStream 嵌入结构体减少重复代码
 - 魔法数字提取为常量 (如 streamCount)
