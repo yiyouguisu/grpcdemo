@@ -17,6 +17,7 @@ import (
 	genchat "gRPCServerDemo/gen/chat"
 	genstream "gRPCServerDemo/gen/stream"
 	"gRPCServerDemo/internal/admin"
+	"gRPCServerDemo/internal/auditlog"
 	"gRPCServerDemo/internal/chat"
 	"gRPCServerDemo/internal/interceptor"
 	"gRPCServerDemo/internal/stream"
@@ -28,14 +29,21 @@ func main() {
 		log.Fatalf("Failed to listen on port 9000: %v", err)
 	}
 
+	// Initialize audit log system
+	auditConfig := auditlog.DefaultConfig()
+	auditFM := auditlog.NewFileManager(auditConfig)
+	auditFM.Start()
+
 	gRPCServer := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(
 			interceptor.UnaryServerRecoveryInterceptor,
 			interceptor.UnaryServerLoggingInterceptor,
+			interceptor.NewAuditUnaryInterceptor(auditFM),
 		),
 		grpc.ChainStreamInterceptor(
 			interceptor.StreamServerRecoveryInterceptor,
 			interceptor.StreamServerLoggingInterceptor,
+			interceptor.NewAuditStreamInterceptor(auditFM),
 		),
 	)
 
@@ -83,6 +91,11 @@ func main() {
 		case <-time.After(5 * time.Second):
 			log.Println("Graceful stop timed out, forcing stop")
 			gRPCServer.Stop()
+		}
+
+		// Flush and close audit log files
+		if err := auditFM.Close(); err != nil {
+			log.Printf("Failed to close audit log file manager: %v", err)
 		}
 	}()
 

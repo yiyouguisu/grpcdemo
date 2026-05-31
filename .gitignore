@@ -8,3 +8,5 @@ coverage.out
 vendor/
 .claude/
 openspec/
+logs/
+tests/
