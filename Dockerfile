@@ -5,6 +5,9 @@ ARG TARGETARCH
 
 WORKDIR /workspace
 
+# 设置中国代理
+ENV GOPROXY=https://goproxy.cn,direct
+
 # 缓存依赖
 COPY go.mod go.sum ./
 RUN go mod download
