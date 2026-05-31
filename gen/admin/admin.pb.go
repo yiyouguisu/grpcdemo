@@ -108,9 +108,9 @@ const file_proto_admin_proto_rawDesc = "" +
 	"\x11proto/admin.proto\x12\x05proto\"\x15\n" +
 	"\x13ListServicesRequest\";\n" +
 	"\x14ListServicesResponse\x12#\n" +
-	"\rservice_names\x18\x01 \x03(\tR\fserviceNames2W\n" +
-	"\fAdminService\x12G\n" +
-	"\fListServices\x12\x1a.proto.ListServicesRequest\x1a\x1b.proto.ListServicesResponseB\x16Z\x14gRPCServerDemo/adminb\x06proto3"
+	"\rservice_names\x18\x01 \x03(\tR\fserviceNames2Y\n" +
+	"\fAdminService\x12I\n" +
+	"\fListServices\x12\x1a.proto.ListServicesRequest\x1a\x1b.proto.ListServicesResponse\"\x00B\x16Z\x14gRPCServerDemo/adminb\x06proto3"
 
 var (
 	file_proto_admin_proto_rawDescOnce sync.Once

@@ -29,7 +29,7 @@ func TestHandler_SayHello(t *testing.T) {
 	h := &Handler{}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, err := h.SayHello(context.Background(), &pb.RequstMessage{Body: tt.body})
+			got, err := h.SayHello(context.Background(), &pb.RequestMessage{Body: tt.body})
 			if (err != nil) != tt.wantErr {
 				t.Errorf("SayHello() error = %v, wantErr %v", err, tt.wantErr)
 				return

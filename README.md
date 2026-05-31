@@ -18,14 +18,20 @@ grpcdemo/
 │   ├── stream/          # StreamService 实现（流式 RPC）
 │   │   ├── handler.go
 │   │   └── handler_test.go
+│   ├── admin/           # AdminService 实现（管理服务）
+│   │   ├── service.go
+│   │   └── service_test.go
 │   └── interceptor/     # gRPC 拦截器
-│       └── interceptor.go
+│       ├── interceptor.go
+│       └── interceptor_test.go
 ├── gen/                 # protobuf 生成的代码
 │   ├── chat/
-│   └── stream/
+│   ├── stream/
+│   └── admin/
 ├── proto/               # protobuf 定义文件
 │   ├── chat.proto
-│   └── stream.proto
+│   ├── stream.proto
+│   └── admin.proto
 ├── Makefile
 ├── Dockerfile
 └── go.mod
@@ -44,7 +50,7 @@ grpcdemo/
 
 ### 前置条件
 
-- Go 1.22+
+- Go 1.25+
 - protoc（可选，用于重新生成 protobuf 代码）
 
 ### 运行
@@ -86,6 +92,7 @@ make proto
 - **健康检查**: 注册 gRPC 标准健康检查服务
 - **优雅关闭**: 监听 SIGINT/SIGTERM 信号，优雅停机
 - **gRPC Reflection**: 支持 grpcurl 等调试工具
+- **AdminService**: 查询已注册的 gRPC 服务列表
 
 ## Docker
 

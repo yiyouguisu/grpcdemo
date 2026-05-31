@@ -12,9 +12,20 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// baseMockStream 提供所有 stream mock 共用的基础方法
+type baseMockStream struct{}
+
+func (m *baseMockStream) SetHeader(metadata.MD) error  { return nil }
+func (m *baseMockStream) SendHeader(metadata.MD) error  { return nil }
+func (m *baseMockStream) SetTrailer(metadata.MD)        {}
+func (m *baseMockStream) Context() context.Context       { return context.Background() }
+func (m *baseMockStream) SendMsg(interface{}) error      { return nil }
+func (m *baseMockStream) RecvMsg(interface{}) error      { return nil }
+
 // --- mock: List ---
 
 type mockListStream struct {
+	baseMockStream
 	sent []*pb.StreamResponse
 }
 
@@ -22,12 +33,6 @@ func (m *mockListStream) Send(resp *pb.StreamResponse) error {
 	m.sent = append(m.sent, resp)
 	return nil
 }
-func (m *mockListStream) SetHeader(metadata.MD) error  { return nil }
-func (m *mockListStream) SendHeader(metadata.MD) error  { return nil }
-func (m *mockListStream) SetTrailer(metadata.MD)        {}
-func (m *mockListStream) Context() context.Context       { return context.Background() }
-func (m *mockListStream) SendMsg(interface{}) error      { return nil }
-func (m *mockListStream) RecvMsg(interface{}) error      { return nil }
 
 func TestHandler_List(t *testing.T) {
 	h := &Handler{}
@@ -66,6 +71,7 @@ func TestHandler_List(t *testing.T) {
 // --- mock: Record ---
 
 type mockRecordStream struct {
+	baseMockStream
 	received []*pb.StreamRequest
 	closed   *pb.StreamResponse
 	idx      int
@@ -75,6 +81,7 @@ func (m *mockRecordStream) SendAndClose(resp *pb.StreamResponse) error {
 	m.closed = resp
 	return nil
 }
+
 func (m *mockRecordStream) Recv() (*pb.StreamRequest, error) {
 	if m.idx >= len(m.received) {
 		return nil, io.EOF
@@ -83,12 +90,6 @@ func (m *mockRecordStream) Recv() (*pb.StreamRequest, error) {
 	m.idx++
 	return req, nil
 }
-func (m *mockRecordStream) SetHeader(metadata.MD) error  { return nil }
-func (m *mockRecordStream) SendHeader(metadata.MD) error  { return nil }
-func (m *mockRecordStream) SetTrailer(metadata.MD)        {}
-func (m *mockRecordStream) Context() context.Context       { return context.Background() }
-func (m *mockRecordStream) SendMsg(interface{}) error      { return nil }
-func (m *mockRecordStream) RecvMsg(interface{}) error      { return nil }
 
 func TestHandler_Record(t *testing.T) {
 	h := &Handler{}
@@ -129,6 +130,7 @@ func TestHandler_Record(t *testing.T) {
 // --- mock: Route ---
 
 type mockRouteStream struct {
+	baseMockStream
 	sent     []*pb.StreamResponse
 	received []*pb.StreamRequest
 	idx      int
@@ -138,6 +140,7 @@ func (m *mockRouteStream) Send(resp *pb.StreamResponse) error {
 	m.sent = append(m.sent, resp)
 	return nil
 }
+
 func (m *mockRouteStream) Recv() (*pb.StreamRequest, error) {
 	if m.idx >= len(m.received) {
 		return nil, io.EOF
@@ -146,12 +149,6 @@ func (m *mockRouteStream) Recv() (*pb.StreamRequest, error) {
 	m.idx++
 	return req, nil
 }
-func (m *mockRouteStream) SetHeader(metadata.MD) error  { return nil }
-func (m *mockRouteStream) SendHeader(metadata.MD) error  { return nil }
-func (m *mockRouteStream) SetTrailer(metadata.MD)        {}
-func (m *mockRouteStream) Context() context.Context       { return context.Background() }
-func (m *mockRouteStream) SendMsg(interface{}) error      { return nil }
-func (m *mockRouteStream) RecvMsg(interface{}) error      { return nil }
 
 func TestHandler_Route(t *testing.T) {
 	h := &Handler{}

@@ -7,9 +7,9 @@ message ListServicesRequest {
 }
 
 message ListServicesResponse {
-  repeated string service_names = 1;
+    repeated string service_names = 1;
 }
 
 service AdminService {
-  rpc ListServices(ListServicesRequest) returns (ListServicesResponse);
+    rpc ListServices (ListServicesRequest) returns (ListServicesResponse) {};
 }

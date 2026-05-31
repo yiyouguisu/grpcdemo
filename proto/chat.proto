@@ -3,9 +3,7 @@ syntax = "proto3";
 package proto;
 option go_package = "gRPCServerDemo/chat";
 
-// NOTE: RequstMessage is a known typo from the original proto generation.
-// To fix, install protoc and run `make proto` after correcting the name below.
-message RequstMessage {
+message RequestMessage {
     string body = 1;
 }
 
@@ -14,5 +12,5 @@ message ResponseMessage {
 }
 
 service ChatService {
-    rpc SayHello (RequstMessage) returns (ResponseMessage){};
+    rpc SayHello (RequestMessage) returns (ResponseMessage) {};
 }

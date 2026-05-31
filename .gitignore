@@ -1,5 +1,8 @@
 .vscode
 .idea
 bin/
-client/chat/test_client
 *.exe
+*.test
+*.out
+coverage.out
+vendor/

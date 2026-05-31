@@ -26,7 +26,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ChatServiceClient interface {
-	SayHello(ctx context.Context, in *RequstMessage, opts ...grpc.CallOption) (*ResponseMessage, error)
+	SayHello(ctx context.Context, in *RequestMessage, opts ...grpc.CallOption) (*ResponseMessage, error)
 }
 
 type chatServiceClient struct {
@@ -37,7 +37,7 @@ func NewChatServiceClient(cc grpc.ClientConnInterface) ChatServiceClient {
 	return &chatServiceClient{cc}
 }
 
-func (c *chatServiceClient) SayHello(ctx context.Context, in *RequstMessage, opts ...grpc.CallOption) (*ResponseMessage, error) {
+func (c *chatServiceClient) SayHello(ctx context.Context, in *RequestMessage, opts ...grpc.CallOption) (*ResponseMessage, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(ResponseMessage)
 	err := c.cc.Invoke(ctx, ChatService_SayHello_FullMethodName, in, out, cOpts...)
@@ -51,7 +51,7 @@ func (c *chatServiceClient) SayHello(ctx context.Context, in *RequstMessage, opt
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility.
 type ChatServiceServer interface {
-	SayHello(context.Context, *RequstMessage) (*ResponseMessage, error)
+	SayHello(context.Context, *RequestMessage) (*ResponseMessage, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -62,7 +62,7 @@ type ChatServiceServer interface {
 // pointer dereference when methods are called.
 type UnimplementedChatServiceServer struct{}
 
-func (UnimplementedChatServiceServer) SayHello(context.Context, *RequstMessage) (*ResponseMessage, error) {
+func (UnimplementedChatServiceServer) SayHello(context.Context, *RequestMessage) (*ResponseMessage, error) {
 	return nil, status.Error(codes.Unimplemented, "method SayHello not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
@@ -87,7 +87,7 @@ func RegisterChatServiceServer(s grpc.ServiceRegistrar, srv ChatServiceServer) {
 }
 
 func _ChatService_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(RequstMessage)
+	in := new(RequestMessage)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ func _ChatService_SayHello_Handler(srv interface{}, ctx context.Context, dec fun
 		FullMethod: ChatService_SayHello_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).SayHello(ctx, req.(*RequstMessage))
+		return srv.(ChatServiceServer).SayHello(ctx, req.(*RequestMessage))
 	}
 	return interceptor(ctx, in, info, handler)
 }

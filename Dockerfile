@@ -2,11 +2,12 @@ FROM --platform=$BUILDPLATFORM golang:1.25 AS builder
 
 ARG TARGETOS
 ARG TARGETARCH
+ARG GOPROXY=https://goproxy.cn,direct
 
 WORKDIR /workspace
 
 # 设置中国代理
-ENV GOPROXY=https://goproxy.cn,direct
+ENV GOPROXY=${GOPROXY}
 
 # 缓存依赖
 COPY go.mod go.sum ./

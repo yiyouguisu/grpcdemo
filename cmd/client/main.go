@@ -14,6 +14,8 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
+const streamCount = 6
+
 func main() {
 	conn, err := grpc.NewClient("passthrough:///localhost:9000", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
@@ -40,7 +42,7 @@ func main() {
 // 一元 RPC
 func testSayHello(conn *grpc.ClientConn) {
 	client := chatpb.NewChatServiceClient(conn)
-	resp, err := client.SayHello(context.Background(), &chatpb.RequstMessage{Body: "Hello from the client!"})
+	resp, err := client.SayHello(context.Background(), &chatpb.RequestMessage{Body: "Hello from the client!"})
 	if err != nil {
 		log.Fatalf("SayHello error: %v", err)
 	}
@@ -77,7 +79,7 @@ func testRecord(conn *grpc.ClientConn) {
 		log.Fatalf("Record error: %v", err)
 	}
 
-	for n := 0; n < 6; n++ {
+	for n := 0; n < streamCount; n++ {
 		err := stream.Send(&streampb.StreamRequest{
 			Pt: &streampb.StreamPoint{Name: "gRPC Stream Client: Record", Value: int32(n)},
 		})
@@ -101,7 +103,7 @@ func testRoute(conn *grpc.ClientConn) {
 		log.Fatalf("Route error: %v", err)
 	}
 
-	for n := 0; n <= 6; n++ {
+	for n := 0; n <= streamCount; n++ {
 		err := stream.Send(&streampb.StreamRequest{
 			Pt: &streampb.StreamPoint{Name: "gRPC Stream Client: Route", Value: int32(n)},
 		})

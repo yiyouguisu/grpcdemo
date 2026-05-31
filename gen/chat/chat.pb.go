@@ -21,29 +21,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-// NOTE: RequstMessage is a known typo from the original proto generation.
-// To fix, install protoc and run `make proto` after correcting the name below.
-type RequstMessage struct {
+type RequestMessage struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Body          string                 `protobuf:"bytes,1,opt,name=body,proto3" json:"body,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *RequstMessage) Reset() {
-	*x = RequstMessage{}
+func (x *RequestMessage) Reset() {
+	*x = RequestMessage{}
 	mi := &file_proto_chat_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *RequstMessage) String() string {
+func (x *RequestMessage) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*RequstMessage) ProtoMessage() {}
+func (*RequestMessage) ProtoMessage() {}
 
-func (x *RequstMessage) ProtoReflect() protoreflect.Message {
+func (x *RequestMessage) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_chat_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -55,12 +53,12 @@ func (x *RequstMessage) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use RequstMessage.ProtoReflect.Descriptor instead.
-func (*RequstMessage) Descriptor() ([]byte, []int) {
+// Deprecated: Use RequestMessage.ProtoReflect.Descriptor instead.
+func (*RequestMessage) Descriptor() ([]byte, []int) {
 	return file_proto_chat_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *RequstMessage) GetBody() string {
+func (x *RequestMessage) GetBody() string {
 	if x != nil {
 		return x.Body
 	}
@@ -115,13 +113,13 @@ var File_proto_chat_proto protoreflect.FileDescriptor
 
 const file_proto_chat_proto_rawDesc = "" +
 	"\n" +
-	"\x10proto/chat.proto\x12\x05proto\"#\n" +
-	"\rRequstMessage\x12\x12\n" +
+	"\x10proto/chat.proto\x12\x05proto\"$\n" +
+	"\x0eRequestMessage\x12\x12\n" +
 	"\x04body\x18\x01 \x01(\tR\x04body\"%\n" +
 	"\x0fResponseMessage\x12\x12\n" +
-	"\x04body\x18\x01 \x01(\tR\x04body2I\n" +
-	"\vChatService\x12:\n" +
-	"\bSayHello\x12\x14.proto.RequstMessage\x1a\x16.proto.ResponseMessage\"\x00B\x15Z\x13gRPCServerDemo/chatb\x06proto3"
+	"\x04body\x18\x01 \x01(\tR\x04body2J\n" +
+	"\vChatService\x12;\n" +
+	"\bSayHello\x12\x15.proto.RequestMessage\x1a\x16.proto.ResponseMessage\"\x00B\x15Z\x13gRPCServerDemo/chatb\x06proto3"
 
 var (
 	file_proto_chat_proto_rawDescOnce sync.Once
@@ -137,11 +135,11 @@ func file_proto_chat_proto_rawDescGZIP() []byte {
 
 var file_proto_chat_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
 var file_proto_chat_proto_goTypes = []any{
-	(*RequstMessage)(nil),   // 0: proto.RequstMessage
+	(*RequestMessage)(nil),  // 0: proto.RequestMessage
 	(*ResponseMessage)(nil), // 1: proto.ResponseMessage
 }
 var file_proto_chat_proto_depIdxs = []int32{
-	0, // 0: proto.ChatService.SayHello:input_type -> proto.RequstMessage
+	0, // 0: proto.ChatService.SayHello:input_type -> proto.RequestMessage
 	1, // 1: proto.ChatService.SayHello:output_type -> proto.ResponseMessage
 	1, // [1:2] is the sub-list for method output_type
 	0, // [0:1] is the sub-list for method input_type

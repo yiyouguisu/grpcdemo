@@ -10,6 +10,8 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const streamCount = 6
+
 type Handler struct {
 	pb.UnimplementedStreamServiceServer
 }
@@ -18,7 +20,7 @@ func (h *Handler) List(r *pb.StreamRequest, stream pb.StreamService_ListServer) 
 	if r.Pt == nil {
 		return status.Error(codes.InvalidArgument, "pt is required")
 	}
-	for n := 0; n <= 6; n++ {
+	for n := 0; n <= streamCount; n++ {
 		err := stream.Send(&pb.StreamResponse{
 			Pt: &pb.StreamPoint{
 				Name:  r.Pt.Name,
